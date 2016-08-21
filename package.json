@@ -1,0 +1,25 @@
+{
+  "name": "stock-charts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot"
+  },
+  "author": "Arul",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^2.0.0",
+    "moment": "^2.14.1",
+    "react": "^15.3.0",
+    "react-chartjs": "jhudson8/react-chartjs#chartjs-v2",
+    "react-dom": "^15.3.0",
+    "react-grid-layout": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {
+    "chart.js": "^1.1.1"
+  }
+}
