@@ -4,7 +4,6 @@ var ReactGridLayout = require('react-grid-layout');
 
 class GraphList extends React.Component {
 
-
     render() {
       return (
             <ReactGridLayout className="layout" cols={2} rowHeight={300} width={1400}>
