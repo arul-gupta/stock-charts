@@ -5,11 +5,13 @@ var moment = require("moment");
 class GraphContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.threshold = 0.04;
     this.state = { name:this.props.name,
      code:this.props.code,
      dataset: [],
      labels: [], 
-     smaData: [] 
+     smaData: [],
+     trend: 0
    }
   }
 
@@ -58,7 +60,36 @@ class GraphContainer extends React.Component {
         smaData.push(sum/20);
       }
     }
-    this.setState({"dataset": data, "smaData": smaData, "labels": labels});
+    var trend = 1;
+    var lastHigh = smaData[0];
+    var lastLow = smaData[0];
+    for(var i=1;i<smaData.length;i++) {
+      var sma = smaData[i];
+      if(trend == 1) {
+        //Up continues
+        if(sma >= lastHigh) {
+          lastHigh = sma;
+        }
+        //Change to down, but only if drop is significant
+        var dropRatio = (lastHigh-sma)/lastHigh;
+        if(dropRatio>this.threshold) {
+          trend = -1;
+          lastLow = sma;
+        }
+      } else if(trend==-1) {
+        //Down continues
+        if(sma<=lastLow) {
+          lastLow = sma;
+        }
+        //Change to up, but only if rise is significant
+        var climbRatio = (sma-lastLow)/lastLow;
+        if(climbRatio>this.threshold) {
+          trend = 1;
+          lastHigh = sma;
+        }
+      }
+    }
+    this.setState({"dataset": data, "smaData": smaData, "labels": labels, "trend":trend});
   }
 
   render() {

@@ -4,6 +4,9 @@ var LineChart = require("react-chartjs").Line;
 class Graph extends React.Component {
 
   render () {
+  	var bgColor = this.props.data.trend == 1 ? "green" : "red";
+  	var col = "rgba(220,220,220,1)";
+  	var smaCol = bgColor;
   	var chartData = {
 	    labels: this.props.data.labels,
 	    datasets: [
@@ -11,19 +14,16 @@ class Graph extends React.Component {
 	            label: this.props.data.name,
 	            fill: true,
 	            lineTension: 0.1,
-	            fillColor: "rgba(220,220,220,0.2)",
-	        	strokeColor: "rgba(220,220,220,1)",
-	            borderColor: "rgba(220,220,220,1)",
-	            borderCapStyle: 'butt',
-	            borderDash: [],
+	        	strokeColor: col,
+	            borderColor: col,
 	            borderDashOffset: 0.0,
 	            borderJoinStyle: 'miter',
-	            pointBorderColor: "rgba(220,220,220,1)",
+	            pointBorderColor: col,
 	            pointBackgroundColor: "#fff",
 	            pointBorderWidth: 1,
 	            pointHoverRadius: 5,
-	            pointHoverBackgroundColor: "rgba(220,220,220,1)",
-	            pointHoverBorderColor: "rgba(220,220,220,1)",
+	            pointHoverBackgroundColor: col,
+	            pointHoverBorderColor: col,
 	            pointHoverBorderWidth: 2,
 	            pointRadius: 1,
 	            pointHitRadius: 10,
@@ -32,32 +32,33 @@ class Graph extends React.Component {
 	        },
 	        {
 	            label: "SMA",
-	            fill: true,
+	            fill: false,
 	            lineTension: 0.1,
-	            fillColor: "rgba(75,192,192,0.2)",
-	        	strokeColor: "rgba(75,192,192,1)",
-	            borderColor: "rgba(75,192,192,1)",
-	            borderCapStyle: 'butt',
-	            borderDash: [],
+	        	strokeColor: smaCol,
+	            borderColor: smaCol,
 	            borderDashOffset: 0.0,
 	            borderJoinStyle: 'miter',
-	            pointBorderColor: "rgba(75,192,192,1)",
+	            pointBorderColor: smaCol,
 	            pointBackgroundColor: "#fff",
 	            pointBorderWidth: 1,
 	            pointHoverRadius: 5,
-	            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-	            pointHoverBorderColor: "rgba(75,192,192,1)",
+	            pointHoverBackgroundColor: smaCol,
+	            pointHoverBorderColor: smaCol,
 	            pointHoverBorderWidth: 2,
 	            pointRadius: 1,
 	            pointHitRadius: 10,
 	            data: this.props.data.smaData,
 	            spanGaps: true,
+	            backgroundColor: bgColor
 	        }
 	    ],
 	};
 	var options = {
 		tooltips: {
 			"mode":"x-axis"
+		},
+		legend: {
+			fullWidth: true
 		}
  //    scales: {
  //    xAxes: [{
@@ -69,7 +70,9 @@ class Graph extends React.Component {
  //    }]
 	// }
 	};
-    return <LineChart data={chartData} options={options} width="600" height="250"/>
+    var chart = <LineChart data={chartData} options={options} width="600" height="250"/>;
+
+    return chart;
   }
 }
 
