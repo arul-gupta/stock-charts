@@ -9,7 +9,7 @@ class GraphList extends React.Component {
             <ReactGridLayout className="layout" cols={2} rowHeight={300} width={1400}>
                {this.props.data.codes.map((x, i) =>
 			     (<div key={i} data-grid={{x: (i%2), y: 0, w: 1, h: 1}}>
-			     	<GraphContainer key={i} name={x} code={x}/>
+			     	<GraphContainer key={i} name={x.text} code={x.text}/>
 			     	</div>)
 				)}
              </ReactGridLayout>

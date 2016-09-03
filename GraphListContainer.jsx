@@ -6,15 +6,8 @@ class GraphListContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-     codes:["EICHERMOT.BO", "ICICIBANK.BO", "ASHOKLEY.BO", "BRITANNIA.BO"]
+     codes: this.props.data.codes
    }
-  }
-
-  componentDidMount() {
-  }
-
-  parseData(jsonData) {
-    
   }
 
   render() {

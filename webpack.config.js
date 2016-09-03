@@ -2,8 +2,8 @@ var config = {
    entry: './main.js',
 	
    output: {
-      path:'./',
-      filename: 'index.js',
+      path: __dirname + "/dist",
+      filename: "bundle.js"
    },
 	
    devServer: {
@@ -20,6 +20,17 @@ var config = {
 				
             query: {
                presets: ['es2015', 'react']
+            }
+         },
+         {
+           test: /\.css$/,
+           loader: 'style-loader'
+         },
+         {
+           test: /\.css$/,
+           loader: 'css-loader',
+           query: {
+             modules: false
             }
          }
       ]
