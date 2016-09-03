@@ -4,7 +4,7 @@ var LineChart = require("react-chartjs").Line;
 class Graph extends React.Component {
 
   render () {
-  	var bgColor = this.props.data.trend == 1 ? "green" : "red";
+  	var bgColor = this.props.data.trendData.trend == 1 ? "green" : "red";
   	var col = "rgba(220,220,220,1)";
   	var smaCol = bgColor;
   	var chartData = {
@@ -31,7 +31,7 @@ class Graph extends React.Component {
 	            spanGaps: true,
 	        },
 	        {
-	            label: "SMA",
+	            label: "SMA  " + this.props.data.trendData.rate,
 	            fill: false,
 	            lineTension: 0.1,
 	        	strokeColor: smaCol,

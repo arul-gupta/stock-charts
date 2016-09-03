@@ -11,7 +11,7 @@ class GraphContainer extends React.Component {
      dataset: [],
      labels: [], 
      smaData: [],
-     trend: 0
+     trendData: {}
    }
   }
 
@@ -60,12 +60,18 @@ class GraphContainer extends React.Component {
         smaData.push(sum/20);
       }
     }
-    var trend = 1;
+    var trendData = this.findTrend(smaData);
+    this.setState({"dataset": data, "smaData": smaData, "labels": labels, "trendData":trendData});
+  }
+
+  findTrend(smaData) {
+    var trendDetails = {trend:1, rate:""};
     var lastHigh = smaData[0];
     var lastLow = smaData[0];
+    var sma = smaData[0];
     for(var i=1;i<smaData.length;i++) {
-      var sma = smaData[i];
-      if(trend == 1) {
+      sma = smaData[i];
+      if(trendDetails.trend == 1) {
         //Up continues
         if(sma >= lastHigh) {
           lastHigh = sma;
@@ -73,10 +79,10 @@ class GraphContainer extends React.Component {
         //Change to down, but only if drop is significant
         var dropRatio = (lastHigh-sma)/lastHigh;
         if(dropRatio>this.threshold) {
-          trend = -1;
+          trendDetails.trend = -1;
           lastLow = sma;
         }
-      } else if(trend==-1) {
+      } else if(trendDetails.trend==-1) {
         //Down continues
         if(sma<=lastLow) {
           lastLow = sma;
@@ -84,12 +90,17 @@ class GraphContainer extends React.Component {
         //Change to up, but only if rise is significant
         var climbRatio = (sma-lastLow)/lastLow;
         if(climbRatio>this.threshold) {
-          trend = 1;
+          trendDetails.trend = 1;
           lastHigh = sma;
         }
       }
     }
-    this.setState({"dataset": data, "smaData": smaData, "labels": labels, "trend":trend});
+    if(trendDetails.trend == 1) {
+      trendDetails.rate = ((sma-lastLow)/lastLow)*100;
+    } else {
+      trendDetails.rate = ((lastHigh-sma)/lastHigh)*100;
+    }
+    return trendDetails;
   }
 
   render() {
