@@ -16,16 +16,19 @@ class GraphContainer extends React.Component {
   }
 
   componentDidMount() {
-    var startDate = moment().subtract(1, 'year').format();
-    var endDate = moment().format();
-    var query = `select * from yahoo.finance.historicaldata
-     where symbol="${this.state.code}" and 
-     startDate="${startDate}" and 
-     endDate="${endDate}" 
-     &format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
-    var url = `https://query.yahooapis.com/v1/public/yql?q=${query}`;
-
+    // var startDate = moment().subtract(1, 'year').format();
+    // var endDate = moment().format();
+    // var query = `select * from yahoo.finance.historicaldata
+    //  where symbol="${this.state.code}" and 
+    //  startDate="${startDate}" and 
+    //  endDate="${endDate}" 
+    //  &format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
+    // var url = `https://query.yahooapis.com/v1/public/yql?q=${query}`;
+    var url = "https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v8/finance/chart/"+ this.state.code + "?range=1y&includePrePost=false&interval=1d&corsDomain=in.finance.yahoo.com&.tsrc=finance";
+    var myHeaders = new Headers();
+    myHeaders.append('X-Requested-With', 'XMLHttprequest');
     var myInit = { method: 'GET',
+                   headers: myHeaders,
                    mode: 'cors',
                    cache: 'default' };
 
@@ -43,20 +46,22 @@ class GraphContainer extends React.Component {
     var data = [], smaData = [];
     var labels = [];
     var sum = 0;
-    var quotes = jsonData.query.results.quote;
+    // var quotes = jsonData.query.results.quote;
+    var quotes = jsonData.chart.result[0].indicators.quote[0].close;
+    var dates = jsonData.chart.result[0].timestamp;
     var j = 0;
 
-    for (var i = quotes.length-1; i>=0; i--) {
+    for (var i = 0; i< quotes.length; i++) {
       var quote = quotes[i];
-      var closeData = parseInt(quote.Close,10);
+      var closeData = quote;//parseInt(quote.Close,10);
       data.push(closeData);
-      labels.push(quote.Date);
+      labels.push(dates[i]);
       if(j<20) {
         j++;
         sum += closeData;
         smaData.push(sum/j);
       } else {
-        sum = sum - quotes[i+20].Close + closeData;
+        sum = sum - quotes[i-20] + closeData;
         smaData.push(sum/20);
       }
     }
